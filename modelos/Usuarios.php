@@ -91,5 +91,12 @@ Class Usuarios
         $sql="EXEC [GA_WMS_PDatoproducto] '$producto' ";
         return ejecutarConsultaSQL($sql);
     }
+
+    //###############--CLAVE DEL SISTEMA---###########################
+
+    public function getClaveEmpresa(){
+        $clave ="SELECT clave_sistema FROM GA_WMS_TEmpresa WHERE empresa='IAV'";
+        return ejecutarConsultaSQL($clave);
+    }
  }
 ?>

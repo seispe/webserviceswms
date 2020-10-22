@@ -103,6 +103,21 @@
 				echo json_encode($rspta);
 			}
 		break;
+		case 'claveEmpresa':
+			$obj = json_decode(file_get_contents('php://input'));
+            $rspta=$usuarios->getClaveEmpresa()->fetch(PDO::FETCH_ASSOC);
+            if(empty($rspta)){
+                 $reeturn=array("status"=>"error",
+                                 "mensaje"=>'Verifique el usuario');
+                     echo json_encode($reeturn);
+             }else{
+                 $reeturn=array("status"=>'Ok',
+                                 "clave"=>$rspta,
+                                 "mensaje"=>"Datos correctos");
+                 echo json_encode($reeturn);
+    
+             }
+			break;
 
 		
 
