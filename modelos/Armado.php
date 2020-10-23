@@ -19,14 +19,31 @@
             $query->bindParam(2, $bulto);
             $query->bindParam(3, $msg, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
             $query->execute();
-            
-            die($query);
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
 
-
-            $result = $query->fetch(PDO::FETCH_OBJ);
-            $result->mensaje=$msg;
-            print_r($result);
-            die();
+        public function colaImpresion($op, $bulto, $usuario, $tipo, $numero, $impresora, $estado, $activo, $modulo){
+            $msg="";
+            $empresa="GPIAV";
+            $query=ejecutarProcedureSQL("exec GA_WMS_PCOLAIMPRESION_prb ?,?,?,?,?,?,?,?,?,?,?");
+            $query->bindParam(1, $op);
+            $query->bindParam(2, $bulto);
+            $query->bindParam(3, $usuario);
+            $query->bindParam(4, $empresa);
+            $query->bindParam(5, $tipo);
+            $query->bindParam(6, $numero);
+            $query->bindParam(7, $impresora);
+            $query->bindParam(8, $estado);
+            $query->bindParam(9, $activo);
+            $query->bindParam(10, $modulo);
+            $query->bindParam(11, $msg, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
+            $query->execute();
+            if (strlen($msg) > 0 ) {
+                return $msg;
+            }else {
+                return false;
+            }
 
         }
 
