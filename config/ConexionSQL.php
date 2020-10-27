@@ -4,7 +4,7 @@ $driver_secundaria = "sqlServer";
 $host_secundaria = "192.168.0.252";
 $user_secundaria = "sa";
 $pass_secundaria = "Alvarado2017*";
-$database_secundaria = "WMSiav";
+$database_secundaria = "WMSiav_prb";
 $charset_secundaria = "utf8";
 $port_secundaria = "3306";
 
