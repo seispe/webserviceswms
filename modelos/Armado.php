@@ -44,6 +44,30 @@
             }else {
                 return false;
             }
+        }
+
+        public function audImpresion($pedidos, $usuario, $modulo, $op, $obs){
+            $msg="";
+            $empresa="GPIAV";
+            $query=ejecutarProcedureSQL("exec GA_WMS_PInsimpNE ?,?,?,?,?,?,?");
+            $query->bindParam(1, $pedidos);
+            $query->bindParam(2, $usuario);
+            $query->bindParam(3, $modulo);
+            $query->bindParam(4, $op);
+            $query->bindParam(5, $empresa);
+            $query->bindParam(6, $obs);
+            $query->bindParam(7, $msg, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
+            $query->execute();
+            if (strlen($msg) > 0 ) {
+                return $msg;
+            }else {
+                return false;
+            }
+        }
+
+        public function getPedidos($filtro, $area, $op){
+            $sql = "exec GA_WMS_PPedEncProceso '$filtro','$area','$op'";
+            return ejecutarConsultaSQL($sql);
 
         }
 

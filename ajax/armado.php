@@ -26,8 +26,8 @@ switch ($_GET["op"]) {
         break;
     case 'getInfoArmado':
 			$obj = json_decode(file_get_contents('php://input'));
-			$rspta=$armado->getInfoArmado($obj->bulto);
-			if(empty($rspta)){
+            $rspta=$armado->getInfoArmado($obj->bulto);
+            if(empty($rspta)){
                 $reeturn=array("status"=>"error",
                                 "mensaje"=>'Verifique el bulto');
                     echo json_encode($reeturn);
@@ -52,6 +52,38 @@ switch ($_GET["op"]) {
 								"mensaje"=>'Problemas de impresón');
 				echo json_encode($rspta);
 			}	
+        break;
+    case 'audImpresion':
+			$obj = json_decode(file_get_contents('php://input'));
+			$rspta=$armado->audImpresion($obj->pedidos,$obj->usuario,$obj->modulo,$obj->op,$obj->obs);
+			if($rspta!=false){
+				$rspta=array("status"=>"Ok",
+								"mensaje"=>"Auditado. ",
+								"msj"=>$rspta);
+				echo json_encode($rspta);
+			}else{
+				$rspta=array("status"=>"error",
+								"mensaje"=>'Problemas de impresón');
+				echo json_encode($rspta);
+			}	
+        break;
+    case 'getPedidos':
+			$obj = json_decode(file_get_contents('php://input'));
+			$rspta=$armado->getPedidos($obj->filtro,$obj->area,$obj->op);
+			while($reg=$rspta->fetch(PDO::FETCH_ASSOC)){
+                $resp[]=$reg;
+             }
+            if(empty($resp)){
+                $reeturn=array("status"=>"error",
+                                "mensaje"=>'Verifique con sistemas');
+                    echo json_encode($reeturn);
+            }else{
+                $reeturn=array("status"=>'Ok',
+                                "pedidos"=>$resp,
+                                "mensaje"=>"Datos correctos");
+                echo json_encode($reeturn);
+   
+            }	
 		break;
     default:
     echo 'ENVIAR LA VARIABLE OP POR METODO GET';
