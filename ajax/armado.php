@@ -84,7 +84,39 @@ switch ($_GET["op"]) {
                 echo json_encode($reeturn);
    
             }	
-		break;
+        break;
+    case 'validarCoordenadaArmado':
+            $obj = json_decode(file_get_contents('php://input'));
+
+            $rspta=$armado->validarCoordenadaArmado( $obj->coordenada,$obj->tipo);
+            $reg=$rspta->fetch(PDO::FETCH_ASSOC);
+            if(empty($reg)){
+                $rspta=array("status"=>"error",
+                                "mensaje"=>'Error verificar datos');
+                    echo json_encode($rspta);
+            }else{
+                $reeturn=array("status"=>'Ok',
+                                "existe"=>$reg,
+                                "mensaje"=>"Datos correctos");
+                echo json_encode($reeturn);
+            }
+        break;
+    case 'pedDetProceso':
+			$obj = json_decode(file_get_contents('php://input'));
+            $rspta=$armado->pedDetProceso($obj->pedido,$obj->producto,$obj->op,$obj->usuario,$obj->area);
+            $reg=$rspta->fetch(PDO::FETCH_ASSOC);
+            if(empty($reg)){
+                $reeturn=array("status"=>"error",
+                                "mensaje"=>'Error verifique el artículo');
+                    echo json_encode($reeturn);
+            }else{
+                $reeturn=array("status"=>'Ok',
+                                "existe"=>$reg,
+                                "mensaje"=>"Datos correctos");
+                echo json_encode($reeturn);
+   
+            }
+        break;
     default:
     echo 'ENVIAR LA VARIABLE OP POR METODO GET';
         break;

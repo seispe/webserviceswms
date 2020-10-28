@@ -71,6 +71,16 @@
 
         }
 
+        public function validarCoordenadaArmado($coordenada,$tipo){
+            $sql="exec [GA_WMS_PCoorPedvalida] '$coordenada', '', '$tipo', '1'";
+            return ejecutarConsultaSQL($sql);
+        }
+
+        public function pedDetProceso($pedido,$producto,$op,$usuario,$area){
+            $sql="exec GA_WMS_PPedDetProceso '$pedido', '$producto', '$op','$usuario', '$area'";
+            return ejecutarConsultaSQL($sql);
+        }
+
 
      }
 ?>
