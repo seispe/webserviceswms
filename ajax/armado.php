@@ -117,6 +117,94 @@ switch ($_GET["op"]) {
    
             }
         break;
+    case 'getBultos':
+			$obj = json_decode(file_get_contents('php://input'));
+            $rspta=$armado->getBultos($obj->usuario,$obj->op);
+            $reg=$rspta->fetch(PDO::FETCH_ASSOC);
+            if(empty($reg)){
+                $reeturn=array("status"=>"error",
+                                "mensaje"=>'No existe bulto');
+                    echo json_encode($reeturn);
+            }else{
+                $reeturn=array("status"=>'Ok',
+                                "bulto"=>$reg,
+                                "mensaje"=>"Datos correctos");
+                echo json_encode($reeturn);
+   
+            }
+        break;
+    case 'insBultos':
+			$obj = json_decode(file_get_contents('php://input'));
+			$rspta=$armado->insBultos($obj->estado,$obj->usuario);
+			if($rspta!=false){
+				$rspta=array("status"=>"Ok",
+								"mensaje"=>"Bulto creado",
+								"bulto"=>$rspta);
+				echo json_encode($rspta);
+			}else{
+				$rspta=array("status"=>"error",
+								"mensaje"=>'Error creación bulto');
+				echo json_encode($rspta);
+			}	
+        break;
+    case 'validarVoid':
+			$obj = json_decode(file_get_contents('php://input'));
+			$rspta=$armado->validarVoid($obj->codigo,$obj->op);
+			if($rspta!=false){
+				$rspta=array("status"=>"Ok",
+								"mensaje"=>"Producto válido",
+								"void"=>$rspta);
+				echo json_encode($rspta);
+			}else{
+				$rspta=array("status"=>"error",
+								"mensaje"=>'Error del producto');
+				echo json_encode($rspta);
+			}	
+        break;
+    case 'getDetArmado':
+			$obj = json_decode(file_get_contents('php://input'));
+            $rspta=$armado->getDetArmado($obj->codigo,$obj->pedido,$obj->area,$obj->op);
+            $reg=$rspta->fetch(PDO::FETCH_ASSOC);
+            if(empty($reg)){
+                $reeturn=array("status"=>"error",
+                                "mensaje"=>'Error recuperando datos');
+                    echo json_encode($reeturn);
+            }else{
+                $reeturn=array("status"=>'Ok',
+                                "armado"=>$reg,
+                                "mensaje"=>"Datos correctos");
+                echo json_encode($reeturn);
+   
+            }
+        break;
+    case 'validaBulto':
+			$obj = json_decode(file_get_contents('php://input'));
+			$rspta=$armado->validaBulto($obj->op,$obj->idbulto,$obj->pedido,$obj->usuario);
+			if($rspta!=false){
+				$rspta=array("status"=>"Ok",
+								"mensaje"=>"Bulto validado",
+								"bulto"=>$rspta);
+				echo json_encode($rspta);
+			}else{
+				$rspta=array("status"=>"error",
+								"mensaje"=>'Error validación bulto');
+				echo json_encode($rspta);
+			}	
+        break;
+    case 'insArmado':
+			$obj = json_decode(file_get_contents('php://input'));
+			$rspta=$armado->insArmado($obj->pedido,$obj->producto,$obj->coor_origen,$obj->coor_destino,$obj->can_armada,$obj->can_armar,$obj->can_pend_armar,$obj->codigo_void,$obj->observacion,$obj->usuario,$obj->idbulto);
+			if($rspta!=false){
+				$rspta=array("status"=>"Ok",
+								"mensaje"=>"Correcto insertar armado",
+								"armado"=>$rspta);
+				echo json_encode($rspta);
+			}else{
+				$rspta=array("status"=>"error",
+								"mensaje"=>'Error insertar armado');
+				echo json_encode($rspta);
+			}	
+        break;
     default:
     echo 'ENVIAR LA VARIABLE OP POR METODO GET';
         break;
