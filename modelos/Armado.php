@@ -26,7 +26,7 @@
         public function colaImpresion($op, $bulto, $usuario, $tipo, $numero, $impresora, $estado, $activo, $modulo){
             $msg="";
             $empresa="GPIAV";
-            $query=ejecutarProcedureSQL("exec GA_WMS_PCOLAIMPRESION_prb ?,?,?,?,?,?,?,?,?,?,?");
+            $query=ejecutarProcedureSQL("exec GA_WMS_PCOLAIMPRESION ?,?,?,?,?,?,?,?,?,?,?");
             $query->bindParam(1, $op);
             $query->bindParam(2, $bulto);
             $query->bindParam(3, $usuario);
@@ -165,6 +165,30 @@
             }else {
                 return false;
             }
+        }
+
+        public function cierreArmado($pedido, $area){
+            $msg="";
+            $query=ejecutarProcedureSQL("exec GA_WMS_PCierreArmado ?,?,?");
+            $query->bindParam(1, $pedido);
+            $query->bindParam(2, $area);
+            $query->bindParam(3, $msg, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
+            $query->execute();
+            if (strlen($msg) > 0 ) {
+                return $msg;
+            }else {
+                return false;
+            }
+        }
+
+        public function detProcPed($pedido,$usuario,$area){
+            $sql="exec GA_WMS_PDetProcPedido '$pedido', '$usuario', '$area'";
+            return ejecutarConsultaSQL($sql);
+        }
+
+        public function artDetArm($pedido,$op,$area){
+            $sql="exec GA_WMS_PPedDetProceso '$pedido', '', '$op','', '$area'";
+            return ejecutarConsultaSQL($sql);
         }
 
 

@@ -15,16 +15,16 @@ Class Picking
         return ejecutarConsultaSQL($sql);
     }
 
-    public function obtenerProductosConsolidado($consolidado,$usuario){
+    public function obtenerProductosConsolidado($consolidado,$usuario,$area){
         $msg="";
-        $query=ejecutarProcedureSQL("exec GA_WMS_PGetRutaPicking '$consolidado','GPIAV','00','$usuario',?");
+        $query=ejecutarProcedureSQL("exec GA_WMS_PGetRutaPicking '$consolidado','GPIAV','$area','$usuario',?");
         $query->bindParam(1, $msg, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
         $query->execute();
         return $query;
     }
 
-    public function cantidadPicking($consolidado,$producto,$usuario,$origen){
-        $sql="exec GA_WMS_PgetProdxConsolidado $consolidado,'$producto','8','$usuario','00','$origen'  ";
+    public function cantidadPicking($consolidado,$producto,$usuario,$area,$origen){
+        $sql="exec GA_WMS_PgetProdxConsolidado $consolidado,'$producto','8','$usuario','$area','$origen'  ";
         return ejecutarConsultaSQL($sql);
     }
 
@@ -66,8 +66,8 @@ Class Picking
         }
     }
 
-    public function product_consolidados($consolidado,$usuario){
-        $sql="GA_WMS_PgetProdxConsolidado '$consolidado','','1','$usuario','' ";
+    public function product_consolidados($consolidado,$usuario,$area){
+        $sql="GA_WMS_PgetProdxConsolidado '$consolidado','','1','$usuario','$area' ";
         return ejecutarConsultaSQL($sql);
     }
 

@@ -10,30 +10,8 @@ Class Usuarios
   public function login($usuario,$clave){
 
     $login ="SELECT * FROM GA_WMS_TUsuario WHERE usuario='$usuario' AND clave='$clave' AND id_empresa=1";
-    $resp= ejecutarConsultaSQL($login);
-    $regLogin = $resp->fetch(PDO::FETCH_ASSOC);
-    
+    return ejecutarConsultaSQL($login);
    
-    if(!empty($regLogin)){
-        
-
-        return $regLogin;
-        // $sql="SELECT * from GA_WMS_TUsuariosConectados with(nolock) WHERE usuario='$usuario' AND empresa=1";
-        // $resp= ejecutarConsultaSQL($sql);
-        // $regUusarioConec = $resp->fetch(PDO::FETCH_ASSOC);
-       
-        // if(!empty($regUusarioConec)){
-        //     $sqlInsert="INSERT INTO GA_WMS_TUsuariosConectados (usuario,empresa,fconexion) VALUES ('$usuario',1,GETDATE())";
-        //     return ejecutarConsultaSQL($sqlInsert)? $regLogin : false;
-        // }else{
-        //     $sqlUpdate="UPDATE GA_WMS_TUsuariosConectados SET fconexion=GETDATE() WHERE usuario='$usuario'";
-        //     return ejecutarConsultaSQL($sqlUpdate)? $regLogin : false;
-        // }
-    }else{
-       
-        return false;
-    }
-
   }
 
   //#############VALIDAR-COORDENADA--##############################
@@ -98,5 +76,12 @@ Class Usuarios
         $clave ="SELECT clave_sistema FROM GA_WMS_TEmpresa WHERE empresa='IAV'";
         return ejecutarConsultaSQL($clave);
     }
+
+    //################ ROLES Y VENTANAS ########################
+    public function getrolVentana($idrol){
+        $ventanas ="SELECT a.id_ventana, a.activo, b.ventana FROM GA_WMS_TrolventanaAPP a inner join GA_WMS_TventanasAPP b on b.id = a.id_ventana WHERE id_rol='$idrol'";
+        return ejecutarConsultaSQL($ventanas);
+    }
+
  }
 ?>

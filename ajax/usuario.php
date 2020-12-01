@@ -16,11 +16,18 @@
 		
 		
 		case 'login':
+
 			    $obj = json_decode(file_get_contents('php://input'));
-				$rspta=$usuarios->login($obj->usuario,$obj->clave);
-				if($rspta!=false){
+				$rspta=$usuarios->login($obj->usuario,$obj->clave)->fetch(PDO::FETCH_ASSOC);
+
+				if(!empty($rspta)){
+					$rsptaVentanas=$usuarios->getrolVentana($rspta['id_rol']);
+					while($reg=$rsptaVentanas->fetch(PDO::FETCH_ASSOC)){
+						$resp[]=$reg;
+						}
 					$reeturn=array("status"=>'Ok',
 									"usuario"=>$rspta,
+									'ventanas'=>$resp,
 									"mensaje"=>"Ingreso exitoso");
 					echo json_encode($reeturn);
 				}else{
@@ -28,6 +35,7 @@
 								"mensaje"=>'Verifique su usuario o clave');
 					echo json_encode($rspta);
 				}
+
 		break;
 
 		case 'validarCoordenada':
@@ -119,7 +127,7 @@
              }
 			break;
 
-		
+	
 
 		default:
 		echo 'ENVIAR LA VARIABLE OP POR METODO GET';

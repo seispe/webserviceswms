@@ -34,7 +34,7 @@
         
         case 'obtenerProductosConsolidado':
             $obj = json_decode(file_get_contents('php://input'));
-            $rspta=$picking->obtenerProductosConsolidado($obj->consolidado,$obj->usuario);
+            $rspta=$picking->obtenerProductosConsolidado($obj->consolidado,$obj->usuario,$obj->area);
             while($reg=$rspta->fetch(PDO::FETCH_ASSOC)){
                $resp[]=$reg;
             }
@@ -52,7 +52,7 @@
 
         case 'cantidadPicking':
             $obj = json_decode(file_get_contents('php://input'));
-            $rspta=$picking->cantidadPicking( $obj->consolidado, $obj->producto, $obj->usuario, $obj->origen);
+            $rspta=$picking->cantidadPicking( $obj->consolidado, $obj->producto, $obj->usuario,$obj->area, $obj->origen);
             $reg=$rspta->fetch(PDO::FETCH_ASSOC);
             if(empty($reg)){
                 $rspta=array("status"=>"error",
@@ -133,7 +133,7 @@
 
         case 'product_consolidados':
             $obj = json_decode(file_get_contents('php://input'));
-            $rspta=$picking->product_consolidados( $obj->consolidado,$obj->usuario);
+            $rspta=$picking->product_consolidados( $obj->consolidado,$obj->usuario,$obj->area);
             while($reg=$rspta->fetch(PDO::FETCH_ASSOC)){
                 $resp[]=$reg;
              }

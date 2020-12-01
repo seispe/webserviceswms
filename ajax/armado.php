@@ -205,6 +205,56 @@ switch ($_GET["op"]) {
 				echo json_encode($rspta);
 			}	
         break;
+    case 'cierreArmado':
+			$obj = json_decode(file_get_contents('php://input'));
+			$rspta=$armado->cierreArmado($obj->pedido,$obj->area);
+			if($rspta!=false){
+				$rspta=array("status"=>"Ok",
+								"mensaje"=>"Correcto cierre armado",
+								"cierre"=>$rspta);
+				echo json_encode($rspta);
+			}else{
+				$rspta=array("status"=>"error",
+								"mensaje"=>'Error cierre armado');
+				echo json_encode($rspta);
+			}	
+        break;
+    case 'detProcPed':
+			$obj = json_decode(file_get_contents('php://input'));
+            $rspta=$armado->detProcPed($obj->pedido,$obj->usuario,$obj->area);
+            $reg=$rspta->fetch(PDO::FETCH_ASSOC);
+            if(empty($reg)){
+                $reeturn=array("status"=>"error",
+                                "mensaje"=>'Error verifique el artículo');
+                    echo json_encode($reeturn);
+            }else{
+                $reeturn=array("status"=>'Ok',
+                                "existe"=>$reg,
+                                "mensaje"=>"Datos correctos");
+                echo json_encode($reeturn);
+   
+            }
+        break;
+
+    case 'artDetArm':
+            $obj = json_decode(file_get_contents('php://input'));
+                    $rspta=$armado->artDetArm($obj->pedido,$obj->op,$obj->area);
+                    while($reg=$rspta->fetch(PDO::FETCH_ASSOC)){
+                        $resp[]=$reg;
+                     }
+                    if(empty($resp)){
+                        $reeturn=array("status"=>"error",
+                                        "mensaje"=>'Verifique el pedido');
+                            echo json_encode($reeturn);
+                    }else{
+                        $reeturn=array("status"=>'Ok',
+                                        "articulos"=>$resp,
+                                        "mensaje"=>"Datos correctos");
+                        echo json_encode($reeturn);
+           
+                    }
+    
+            break;
     default:
     echo 'ENVIAR LA VARIABLE OP POR METODO GET';
         break;
