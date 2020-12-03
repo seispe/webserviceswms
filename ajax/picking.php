@@ -31,6 +31,28 @@
                 }
 
         break;
+
+        case 'consolidadosArea':
+            $obj = json_decode(file_get_contents('php://input'));
+            $rspta=$picking->consolidadosArea($obj->area,$obj->op);
+
+            while($reg=$rspta->fetch(PDO::FETCH_ASSOC)){
+                $resp[]=$reg;
+            }
+
+            if(empty($resp)){
+                $rspta=array("status"=>"error",
+                                "mensaje"=>'Verifique su usuario');
+                    echo json_encode($rspta);
+            }else{
+                $reeturn=array("status"=>'Ok',
+                                "consolidados"=>$resp,
+                                "mensaje"=>"Datos correctos");
+                echo json_encode($reeturn);
+
+            }
+
+        break;
         
         case 'obtenerProductosConsolidado':
             $obj = json_decode(file_get_contents('php://input'));

@@ -79,7 +79,7 @@ Class Usuarios
 
     //################ ROLES Y VENTANAS ########################
     public function getrolVentana($idrol){
-        $ventanas ="SELECT a.id_ventana, a.activo, b.ventana FROM GA_WMS_TrolventanaAPP a inner join GA_WMS_TventanasAPP b on b.id = a.id_ventana WHERE id_rol='$idrol'";
+        $ventanas ="SELECT a.id_ventana, a.activo, b.ventana, b.aplicativo FROM GA_WMS_TrolventanaAPP a inner join GA_WMS_TventanasAPP b on b.id = a.id_ventana WHERE id_rol='$idrol'";
         return ejecutarConsultaSQL($ventanas);
     }
 

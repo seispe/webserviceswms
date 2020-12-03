@@ -134,18 +134,23 @@ switch ($_GET["op"]) {
             }
         break;
     case 'insBultos':
-			$obj = json_decode(file_get_contents('php://input'));
-			$rspta=$armado->insBultos($obj->estado,$obj->usuario);
-			if($rspta!=false){
-				$rspta=array("status"=>"Ok",
-								"mensaje"=>"Bulto creado",
-								"bulto"=>$rspta);
-				echo json_encode($rspta);
-			}else{
-				$rspta=array("status"=>"error",
-								"mensaje"=>'Error creación bulto');
-				echo json_encode($rspta);
-			}	
+            $obj = json_decode(file_get_contents('php://input'));
+            
+            if($obj->estado==2 || $obj->estado=="2"){
+                $rspta=$armado->insBultos($obj->estado,$obj->usuario);
+                if($rspta!=false){
+                    $rspta=array("status"=>"Ok",
+                                    "mensaje"=>"Bulto creado",
+                                    "bulto"=>$rspta);
+                    echo json_encode($rspta);
+                }else{
+                    $rspta=array("status"=>"error",
+                                    "mensaje"=>'Error creación bulto');
+                    echo json_encode($rspta);
+                }
+            }
+
+			
         break;
     case 'validarVoid':
 			$obj = json_decode(file_get_contents('php://input'));

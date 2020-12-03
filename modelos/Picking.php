@@ -15,6 +15,11 @@ Class Picking
         return ejecutarConsultaSQL($sql);
     }
 
+    public function consolidadosArea($area,$op){
+        $sql="exec GA_WMS_PGetConsolidadoxArea_app '$area','$op'";
+        return ejecutarConsultaSQL($sql);
+    }
+
     public function obtenerProductosConsolidado($consolidado,$usuario,$area){
         $msg="";
         $query=ejecutarProcedureSQL("exec GA_WMS_PGetRutaPicking '$consolidado','GPIAV','$area','$usuario',?");
