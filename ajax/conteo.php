@@ -7,7 +7,8 @@ $conteo=new Conteo();
 switch ($_GET["op"]) {
     case 'getccMatriz':
         $obj = json_decode(file_get_contents('php://input'));
-                $rspta=$conteo->getccMatriz($obj->op,$obj->documento);
+        if (!empty($obj->op)) {
+            $rspta=$conteo->getccMatriz($obj->op,$obj->documento);
                 while($reg=$rspta->fetch(PDO::FETCH_ASSOC)){
                     $resp[]=$reg;
                  }
@@ -22,6 +23,8 @@ switch ($_GET["op"]) {
                     echo json_encode($reeturn);
        
                 }
+        }
+                
 
         break;
     

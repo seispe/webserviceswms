@@ -7,19 +7,22 @@ $bahias=new Bahias();
 switch ($_GET["op"]) {
     case 'bahiasxbultos':
         $obj = json_decode(file_get_contents('php://input'));
-                $rspta=$bahias->bahiasxbultos($obj->bulto,$obj->bahia,$obj->usuario)->fetch(PDO::FETCH_ASSOC);
+        if (!empty($obj->bulto)) {
+            $rspta=$bahias->bahiasxbultos($obj->bulto,$obj->bahia,$obj->usuario)->fetch(PDO::FETCH_ASSOC);
 
-                if(empty($rspta)){
-                    $return=array("status"=>"error",
-                    				"mensaje"=>'Verificar datos');
-                    	echo json_encode($return);
-                }else{
-                    $return=array("status"=>'Ok',
-									"salida"=>$rspta,
-									"mensaje"=>"Datos correctos");
+            if(empty($rspta)){
+                $return=array("status"=>"error",
+                                "mensaje"=>'Verificar datos');
                     echo json_encode($return);
+            }else{
+                $return=array("status"=>'Ok',
+                                "salida"=>$rspta,
+                                "mensaje"=>"Datos correctos");
+                echo json_encode($return);
 
-                }
+            }
+        }
+               
 
         break;
     

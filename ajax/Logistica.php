@@ -7,37 +7,44 @@ $logistica=new Logistica();
 switch ($_GET["op"]) {
         case 'getPedido':
         $obj = json_decode(file_get_contents('php://input'));
-        $rspta=$logistica->getPedido($obj->pedido)->fetch(PDO::FETCH_ASSOC);
-        if(empty($rspta)){
-             $reeturn=array("status"=>"error",
-                             "mensaje"=>'Verifique el pedido');
-                 echo json_encode($reeturn);
-         }else{
-             $reeturn=array("status"=>'Ok',
-                             "pedidos"=>$rspta,
-                             "mensaje"=>"Datos correctos");
-             echo json_encode($reeturn);
-
-         }
-        break;
-        case 'insLogistica':
-            $obj = json_decode(file_get_contents('php://input'));
-            $rspta=$logistica->insLogistica($obj->pedido,$obj->usuario)->fetch(PDO::FETCH_ASSOC);
+        if (!empty($obj->pedido)) {
+            $rspta=$logistica->getPedido($obj->pedido)->fetch(PDO::FETCH_ASSOC);
             if(empty($rspta)){
                  $reeturn=array("status"=>"error",
                                  "mensaje"=>'Verifique el pedido');
                      echo json_encode($reeturn);
              }else{
                  $reeturn=array("status"=>'Ok',
-                                 "logistica"=>$rspta,
+                                 "pedidos"=>$rspta,
                                  "mensaje"=>"Datos correctos");
                  echo json_encode($reeturn);
     
              }
+        }
+        
+        break;
+        case 'insLogistica':
+            $obj = json_decode(file_get_contents('php://input'));
+            if (!empty($obj->pedido)) {
+                $rspta=$logistica->insLogistica($obj->pedido,$obj->usuario)->fetch(PDO::FETCH_ASSOC);
+                if(empty($rspta)){
+                     $reeturn=array("status"=>"error",
+                                     "mensaje"=>'Verifique el pedido');
+                         echo json_encode($reeturn);
+                 }else{
+                     $reeturn=array("status"=>'Ok',
+                                     "logistica"=>$rspta,
+                                     "mensaje"=>"Datos correctos");
+                     echo json_encode($reeturn);
+        
+                 }
+            }
+            
             break;
         case 'cargaCamion':
                 $obj = json_decode(file_get_contents('php://input'));
-                $rspta=$logistica->cargaCamion($obj->pedido,$obj->camion,$obj->transportista,$obj->usuario)->fetch(PDO::FETCH_ASSOC);
+                if (!empty($obj->pedido)) {
+                    $rspta=$logistica->cargaCamion($obj->pedido,$obj->camion,$obj->transportista,$obj->usuario)->fetch(PDO::FETCH_ASSOC);
                 if(empty($rspta)){
                      $reeturn=array("status"=>"error",
                                      "mensaje"=>'Verifique el pedido');
@@ -49,10 +56,13 @@ switch ($_GET["op"]) {
                      echo json_encode($reeturn);
         
                  }
+                }
+                
                 break;
         case 'getTrans':
                     $obj = json_decode(file_get_contents('php://input'));
-                    $rspta=$logistica->getTrans($obj->pedido,$obj->opcion);
+                    if (!empty($obj->pedido)) {
+                        $rspta=$logistica->getTrans($obj->pedido,$obj->opcion);
                     while($reg=$rspta->fetch(PDO::FETCH_ASSOC)){
                         $resp[]=$reg;
                      }
@@ -67,6 +77,8 @@ switch ($_GET["op"]) {
                          echo json_encode($reeturn);
             
                      }
+                    }
+                    
                     break;
     default:
         echo "ENVIAR LA VARIABLE OP POR METODO GET";
