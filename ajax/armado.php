@@ -231,7 +231,8 @@ switch ($_GET["op"]) {
     case 'insArmado':
             $obj = json_decode(file_get_contents('php://input'));
         if (!empty($obj->pedido)) {
-            $rspta=$armado->insArmado($obj->pedido,$obj->producto,$obj->coor_origen,$obj->coor_destino,$obj->can_armada,$obj->can_armar,$obj->can_pend_armar,$obj->codigo_void,$obj->observacion,$obj->usuario,$obj->idbulto);
+            $observacion = isset($obj->observacion) ? $obj->observacion:"";
+            $rspta=$armado->insArmado($obj->pedido,$obj->producto,$obj->coor_origen,$obj->coor_destino,$obj->can_armada,$obj->can_armar,$obj->can_pend_armar,$obj->codigo_void,$observacion,$obj->usuario,$obj->idbulto);
 			if($rspta!=false){
 				$rspta=array("status"=>"Ok",
 								"mensaje"=>"Correcto insertar armado",
