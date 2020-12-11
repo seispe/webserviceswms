@@ -5,16 +5,15 @@
     }
 
 
-    public function getccMatriz($op, $documento){
+    public function getccParcial($op, $id, $producto){
         $msg="";
         $empresa="GPIAV";
+        $documento="";
         $tipo="";
         $cantidad=0;
-        $codigo="";
         $descripcion="";
         $observacion="";
         $origen="";
-        $id=0;
         $usuario="";
         $usuarioa="";
 
@@ -23,7 +22,7 @@
         $query->bindParam(2, $tipo);
         $query->bindParam(3, $documento);
         $query->bindParam(4, $cantidad);
-        $query->bindParam(5, $codigo);
+        $query->bindParam(5, $producto);
         $query->bindParam(6, $descripcion);
         $query->bindParam(7, $observacion);
         $query->bindParam(8, $origen);
@@ -33,8 +32,13 @@
         $query->bindParam(12, $usuarioa);
         $query->bindParam(13, $msg, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
         $query->execute();
-        //$result = $query->fetch(PDO::FETCH_ASSOC);
-        return $query;
+        return $msg;
+        
+    }
+
+    public function getConteosCiclicos($documento,$tipo,$producto, $op){
+        $sql = "exec GA_WMS_PgetConteosCiclico '$documento','$tipo','$producto','$op'";
+        return ejecutarConsultaSQL($sql);
     }
 
  }
