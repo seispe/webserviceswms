@@ -29,7 +29,7 @@ switch ($_GET["op"]) {
     case 'getccParcial':
 			$obj = json_decode(file_get_contents('php://input'));
 			if (!empty($obj->op)) {
-				$rspta=$conteo->getccParcial($obj->op,$obj->id,$obj->producto);
+				$rspta=$conteo->getccParcial($obj->op,$obj->id,$obj->producto,$obj->origen);
                 if($rspta>=0){
                     $rspta=array("status"=>"Ok",
                                     "mensaje"=>"Parcial valido",
@@ -42,7 +42,25 @@ switch ($_GET["op"]) {
                 }	
 			}
 			
-		break;
+        break;
+    case 'validarCoordenadaConteo':
+            $obj = json_decode(file_get_contents('php://input'));
+            if (!empty($obj->coordenada)) {
+                $rspta=$conteo->validarCoordenadaConteo( $obj->coordenada,$obj->tipo);
+                $reg=$rspta->fetch(PDO::FETCH_ASSOC);
+                if(empty($reg)){
+                    $rspta=array("status"=>"error",
+                                    "mensaje"=>'Error verificar datos');
+                        echo json_encode($rspta);
+                }else{
+                    $reeturn=array("status"=>'Ok',
+                                    "existe"=>$reg,
+                                    "mensaje"=>"Datos correctos");
+                    echo json_encode($reeturn);
+                }
+            }
+            
+        break;
     
     default:
     echo 'ENVIAR LA VARIABLE OP POR METODO GET';

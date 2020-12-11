@@ -5,7 +5,7 @@
     }
 
 
-    public function getccParcial($op, $id, $producto){
+    public function getccParcial($op, $id, $producto, $origen){
         $msg="";
         $empresa="GPIAV";
         $documento="";
@@ -13,7 +13,6 @@
         $cantidad=0;
         $descripcion="";
         $observacion="";
-        $origen="";
         $usuario="";
         $usuarioa="";
 
@@ -38,6 +37,11 @@
 
     public function getConteosCiclicos($documento,$tipo,$producto, $op){
         $sql = "exec GA_WMS_PgetConteosCiclico '$documento','$tipo','$producto','$op'";
+        return ejecutarConsultaSQL($sql);
+    }
+
+    public function validarCoordenadaConteo($coordenada, $tipo){
+        $sql="exec [GA_WMS_PCoorPedvalida] '$coordenada', '', '$tipo', '1'";
         return ejecutarConsultaSQL($sql);
     }
 
