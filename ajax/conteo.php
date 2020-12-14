@@ -62,6 +62,42 @@ switch ($_GET["op"]) {
             
         break;
     
+    case 'activaSuma':
+        $obj = json_decode(file_get_contents('php://input'));
+        if (!empty($obj->op)) {
+            $rspta=$conteo->activaSuma($obj->op,$obj->id,$obj->producto,$obj->origen,$obj->activo);
+            if($rspta>=0){
+                $rspta=array("status"=>"Ok",
+                                "mensaje"=>"Correcto valores a sumar",
+                                "suma"=>$rspta);
+                echo json_encode($rspta);
+            }else{
+                $rspta=array("status"=>"error",
+                                "mensaje"=>'Error valores a sumar');
+                echo json_encode($rspta);
+            }	
+        }
+			
+        break;
+
+        case 'insConteoCiclico':
+            $obj = json_decode(file_get_contents('php://input'));
+            if (!empty($obj->op)) {
+                $rspta=$conteo->insConteoCilico($obj->bodega,$obj->op,$obj->tipo,$obj->id,$obj->producto,$obj->origen,$obj->cantidad,$obj->usuario);
+                if($rspta>=0){
+                    $rspta=array("status"=>"Ok",
+                                    "mensaje"=>"Correcto insert conteo",
+                                    "inserta"=>$rspta);
+                    echo json_encode($rspta);
+                }else{
+                    $rspta=array("status"=>"error",
+                                    "mensaje"=>'Error insert conteo');
+                    echo json_encode($rspta);
+                }	
+            }
+                
+            break;
+
     default:
     echo 'ENVIAR LA VARIABLE OP POR METODO GET';
         break;
