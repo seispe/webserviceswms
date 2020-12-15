@@ -66,7 +66,7 @@ switch ($_GET["op"]) {
         $obj = json_decode(file_get_contents('php://input'));
         if (!empty($obj->op)) {
             $rspta=$conteo->activaSuma($obj->op,$obj->id,$obj->producto,$obj->origen,$obj->activo);
-            if($rspta>=0){
+            if($rspta!=false){
                 $rspta=array("status"=>"Ok",
                                 "mensaje"=>"Correcto valores a sumar",
                                 "suma"=>$rspta);
@@ -84,7 +84,7 @@ switch ($_GET["op"]) {
             $obj = json_decode(file_get_contents('php://input'));
             if (!empty($obj->op)) {
                 $rspta=$conteo->insConteoCilico($obj->bodega,$obj->op,$obj->tipo,$obj->id,$obj->producto,$obj->origen,$obj->cantidad,$obj->usuario);
-                if($rspta>=0){
+                if($rspta!=false){
                     $rspta=array("status"=>"Ok",
                                     "mensaje"=>"Correcto insert conteo",
                                     "inserta"=>$rspta);
