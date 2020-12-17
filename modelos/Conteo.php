@@ -128,9 +128,53 @@
                 return false;
             }
         }
+    }
 
-        
-        
+    public function getcierreTConteo($id, $producto){
+        $msg="";
+        $empresa="GPIAV";
+        $usuario = "";
+        $coordenada = "";
+        $reconteo = 0;
+        $op = "2";
+
+        $query=ejecutarProcedureSQL("exec GA_CC_PCierreConteoCiclico ?,?,?,?,?,?,?,?");
+        $query->bindParam(1, $usuario);
+        $query->bindParam(2, $coordenada);
+        $query->bindParam(3, $id);
+        $query->bindParam(4, $reconteo);
+        $query->bindParam(5, $producto);
+        $query->bindParam(6, $empresa);
+        $query->bindParam(7, $op);
+        $query->bindParam(8, $msg, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function getcierreConteo($id){
+        $msg="";
+        $empresa="GPIAV";
+        $usuario = "";
+        $coordenada = "";
+        $reconteo = 0;
+        $op = "1";
+        $producto = "";
+        $query=ejecutarProcedureSQL("exec GA_CC_PCierreConteoCiclico ?,?,?,?,?,?,?,?");
+        $query->bindParam(1, $usuario);
+        $query->bindParam(2, $coordenada);
+        $query->bindParam(3, $id);
+        $query->bindParam(4, $reconteo);
+        $query->bindParam(5, $producto);
+        $query->bindParam(6, $empresa);
+        $query->bindParam(7, $op);
+        $query->bindParam(8, $msg, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 50);
+        $query->execute();
+        if (strlen($msg)>0) {
+            return $msg;
+        }else{
+            return false;
+        }
     }
 
     

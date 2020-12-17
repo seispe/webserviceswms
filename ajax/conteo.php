@@ -97,6 +97,42 @@ switch ($_GET["op"]) {
             }
                 
             break;
+        case 'getcierreTConteo':
+            $obj = json_decode(file_get_contents('php://input'));
+        if (!empty($obj->id)) {
+            $rspta=$conteo->getcierreTConteo($obj->id,$obj->producto);
+            if(empty($rspta)){
+                $reeturn=array("status"=>"error",
+                                "mensaje"=>'Error recuperando cierreconteocc');
+                    echo json_encode($reeturn);
+            }else{
+                $reeturn=array("status"=>'Ok',
+                                "valores"=>$rspta,
+                                "mensaje"=>"Datos correctos");
+                echo json_encode($reeturn);
+    
+            }
+        }
+            
+        break;
+
+    case 'getcierreConteo':
+        $obj = json_decode(file_get_contents('php://input'));
+        if (!empty($obj->id)) {
+            $rspta=$conteo->getcierreConteo($obj->id);
+            if($rspta!=false){
+                $rspta=array("status"=>"Ok",
+                                "mensaje"=>"Correcto cierre conteo",
+                                "cierre"=>$rspta);
+                echo json_encode($rspta);
+            }else{
+                $rspta=array("status"=>"error",
+                                "mensaje"=>'Error cierre conteo');
+                echo json_encode($rspta);
+            }	
+        }
+            
+        break;
 
     default:
     echo 'ENVIAR LA VARIABLE OP POR METODO GET';
